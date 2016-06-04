@@ -1,9 +1,13 @@
 class Map:
     def __init__(self, canv, charpos):
+        #getting the canvas to put the map
         self.c = canv
+        #getting character position
         self.charpos = charpos
+        #setting max width and height of the canvas
         self.max_width = 220
         self.max_height = 180
+        #set the starter plane
         self.start_p = 2
         self.dim1 = 100
         self.dim2 = 70
@@ -21,6 +25,7 @@ class Map:
         self.dim14 = 140
         self.dim15 = 60
         self.dim16 = 100
+        #left upper corner of each plane
         self.x1 = (self.max_width-self.dim1)/2
         self.y1 = (self.max_height-self.dim2)/2
         self.x2 = (self.max_width-self.dim3)/2
@@ -37,6 +42,7 @@ class Map:
         self.y7 = (self.max_height-self.dim14)/2
         self.x8 = (self.max_width-self.dim15)/2
         self.y8 = (self.max_height-self.dim16)/2
+        #lists of coordinates for draw every room
         self.r1 = [self.x1, self.y1, self.x1+40, self.y1, self.x1+40, self.y1+20, self.x1, self.y1+20]
         self.r2 = [self.x1, self.y1+20, self.x1+20, self.y1+20, self.x1+20, self.y1+50, self.x1, self.y1+50]
         self.r3 = [self.x1, self.y1+50, self.x1+40, self.y1+50, self.x1+40, self.y1+70, self.x1, self.y1+70]
@@ -94,6 +100,7 @@ class Map:
         self.r49 = [self.x8, self.y8+50, self.x8+20, self.y8+50, self.x8+20, self.y8+60, self.x8, self.y8+60]
         self.r50 = [self.x8+30, self.y8+80, self.x8+40, self.y8+80, self.x8+40, self.y8+100, self.x8+30, self.y8+100]
         self.r51 = [self.x8+20, self.y8+20, self.x8+60, self.y8+20, self.x8+60, self.y8+80, self.x8+20, self.y8+80]
+        #draw the doors for every room
         self.p0d1 = [self.x1+7, self.y1+20, self.x1+13, self.y1+20, self.x1+13, self.y1+50, self.x1+7, self.y1+50]
         self.p0d2 = [self.x1+40, self.y1+7, self.x1+60, self.y1+7, self.x1+60, self.y1+13, self.x1+40, self.y1+13]
         self.p0d3 = [self.x1+47, self.y1+20, self.x1+53, self.y1+20, self.x1+53, self.y1+21, self.x1+47, self.y1+21]
@@ -120,6 +127,7 @@ class Map:
         self.p6d2 = [self.x7+40, self.y7+27, self.x7+71, self.y7+27, self.x7+71, self.y7+33, self.x7+40, self.y7+33]
         self.p6d3 = [self.x7+53, self.y7+100, self.x7+57, self.y7+100, self.x7+57, self.y7+101, self.x7+53, self.y7+101]
         self.p6d4 = [self.x7+50, self.y7+117, self.x7+60, self.y7+117, self.x7+60, self.y7+123, self.x7+50, self.y7+123]
+        #doors in every plane
         self.d0 = [self.p0d1, self.p0d2, self.p0d3, self.p0d4]
         self.d1 = [self.p1d1, self.p1d2, self.p1d3, self.p1d4]
         self.d2 = [self.p2d1, self.p2d2, self.p2d3, self.p2d4, self.p2d5, self.p2d6]
@@ -128,6 +136,7 @@ class Map:
         self.d5 = []
         self.d6 = [self.p6d1, self.p6d2, self.p6d3, self.p6d4]
         self.d7 = []
+        #lists of rooms in every plane
         self.p0 = [self.r48, self.r49, self.r50, self.r51]
         self.p1 = [self.r41, self.r42, self.r43, self.r44, self.r45, self.r46, self.r47]
         self.p2 = [self.r1, self.r2, self.r3, self.r4, self.r5, self.r6, self.r7]
@@ -136,12 +145,17 @@ class Map:
         self.p5 = [self.r26, self.r27, self.r28, self.r29, self.r30, self.r31, self.r32, self.r33]
         self.p6 = [self.r34, self.r35, self.r36, self.r37, self.r38, self.r39]
         self.p7 = [self.r40]
+        #visited rooms
         self.visited = [self.r5]
+        #passages between two rooms
         self.passages = [self.r4, self.r10, self.r16, self.r24, self.r20, self.r29, self.r26, self.r34, self.r41,
                          self.r43, self.r51, self.r37]
+        #names of the planes
         self.planes = ['Piano Bonus', 'Piano Sotterraneo', 'Piano terra', 'I piano', 'II piano', 'III piano',
                        'IV piano, base della torre', 'Cima della Torre']
+        #initialize the first plane
         self.create_plane(self.c, self.getplane(self.charpos))
+        #plane id
         self.idd = self.c.create_text(110, 160, fill='#FA8072', text=self.planes[self.start_p], font=('Tempus Sans ITC', 8, 'bold'))
         self.create_doors(self.c, self.getdoors(self.charpos))
         self.mylocation(self.c, self.getroomid(self.charpos))
@@ -150,6 +164,7 @@ class Map:
             for i in range(len(val)):
                 if val[i] not in self.visited:
                     pass
+                    #this option is commented for keep the map secret. Uncomment to draw all the map with red rectangles
                     # cv.create_polygon(val[i], outline="green", fill="red")
                 else:
                     if val[i] in self.passages:
